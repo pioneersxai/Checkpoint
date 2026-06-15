@@ -252,9 +252,9 @@ const BRAND = {
   // Apply CSS color vars
   function applyColors() {
     const r = document.documentElement.style;
-    r.setProperty('--primary-red',   BRAND.primaryColor);
-    r.setProperty('--primary-dark',  BRAND.primaryColorDark);
-    r.setProperty('--primary-glow',  BRAND.primaryColorGlow);
+    r.setProperty("--accent", BRAND.primaryColor);
+    r.setProperty("--bg-dark", BRAND.primaryColor);
+    // glow removed
   }
 
   // Show only sections listed in BRAND.sections
@@ -610,5 +610,30 @@ const BRAND = {
     buildFooter();
     buildWhatsApp();
     applySections();
+  });
+})();
+
+// Re-run fade-in observer after engine injects content
+// This is needed because animations.js runs before config.js builds the DOM
+(function reObserveFadeIns() {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Small delay to ensure engine has finished building
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+      // Also immediately show elements already in viewport
+      document.querySelectorAll('.fade-in').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) el.classList.add('visible');
+      });
+    }, 100);
   });
 })();
