@@ -15,78 +15,106 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
     <style>
-      /* ── NAV OVERRIDE — force correct layout ── */
+      /* ── RESET nav completely — override everything ── */
       #navbar {
-        position:fixed; top:0; width:100%;
-        background:rgba(255,255,255,0.97);
-        backdrop-filter:blur(12px);
-        z-index:1000; padding:15px 0;
-        border-bottom:1px solid #bae6fd;
-        transition:all .3s;
+        position:fixed !important; top:0 !important; width:100% !important;
+        background:#ffffff !important;
+        backdrop-filter:none !important;
+        z-index:9000 !important; padding:0 !important;
+        border-bottom:1px solid #e0f2fe !important;
+        box-shadow:none !important;
+        transition:box-shadow .3s !important;
       }
       #navbar.scrolled {
-        padding:10px 0;
-        box-shadow:0 2px 20px rgba(14,165,233,0.12);
+        box-shadow:0 2px 20px rgba(14,165,233,0.1) !important;
       }
       #navbar .nav-container {
-        max-width:1200px; margin:0 auto;
-        display:flex; justify-content:space-between; align-items:center;
-        padding:0 20px; flex-direction:row-reverse;
+        max-width:1200px !important; margin:0 auto !important;
+        display:flex !important; align-items:center !important;
+        justify-content:space-between !important;
+        padding:0 24px !important;
+        height:64px !important;
+        flex-direction:row !important; /* LTR order so logo left, links right visually in RTL */
       }
+      /* Logo — right side in RTL */
       #navbar .brand-logo {
-        font-size:20px; font-weight:700;
-        color:#0c4a6e; text-decoration:none;
+        font-size:20px !important; font-weight:700 !important;
+        color:#0c4a6e !important; text-decoration:none !important;
+        white-space:nowrap !important; order:3 !important;
+        border:none !important; background:none !important; padding:0 !important;
       }
+      /* Links — center */
       #navbar .nav-links {
-        display:flex; gap:8px; list-style:none;
-        margin:0; padding:0;
+        display:flex !important; align-items:center !important;
+        gap:4px !important; list-style:none !important;
+        margin:0 !important; padding:0 !important;
+        flex-direction:row !important; order:2 !important;
       }
+      #navbar .nav-links li { margin:0 !important; padding:0 !important; }
       #navbar .nav-links a {
-        color:#64748b; text-decoration:none;
-        font-size:14px; font-weight:500;
-        padding:7px 16px; border-radius:8px;
-        transition:all .3s; display:block;
-        border:1px solid transparent;
+        color:#64748b !important; text-decoration:none !important;
+        font-size:14px !important; font-weight:500 !important;
+        padding:8px 16px !important; border-radius:8px !important;
+        transition:all .3s !important; display:block !important;
+        border:none !important; background:none !important;
+        font-family:'Cairo',sans-serif !important;
       }
-      #navbar .nav-links a:hover,
+      #navbar .nav-links a:hover {
+        color:#0c4a6e !important;
+        background:#f0f9ff !important;
+      }
+      /* kill every animation.css nav override */
+      #navbar .nav-links a::after,
+      #navbar .nav-links a::before { display:none !important; content:none !important; }
+      #navbar .nav-links a.active,
+      #navbar .nav-links li.active a,
       #navbar .nav-links li:first-child a {
-        color:#0c4a6e;
-        border-color:#0c4a6e;
+        border:none !important; background:none !important;
+        color:#64748b !important; box-shadow:none !important;
       }
+      /* CTA button — left side in RTL */
       #navbar .nav-cta {
-        background:#0ea5e9; color:#fff;
-        padding:9px 22px; border-radius:30px;
-        text-decoration:none; font-size:14px; font-weight:600;
-        transition:all .3s; white-space:nowrap;
-        display:flex; align-items:center; gap:6px;
+        background:#0ea5e9 !important; color:#fff !important;
+        padding:9px 22px !important; border-radius:30px !important;
+        text-decoration:none !important; font-size:14px !important;
+        font-weight:600 !important; font-family:'Cairo',sans-serif !important;
+        transition:all .3s !important; white-space:nowrap !important;
+        display:flex !important; align-items:center !important; gap:6px !important;
+        order:1 !important; border:none !important;
       }
-      #navbar .nav-cta:hover { background:#0284c7; transform:translateY(-1px); }
-      #navbar .mobile-menu-toggle { display:none; font-size:1.4rem; color:#0c4a6e; background:none; border:none; }
+      #navbar .nav-cta:hover {
+        background:#0284c7 !important; transform:translateY(-1px) !important;
+      }
+      #navbar .mobile-menu-toggle {
+        display:none !important; font-size:1.4rem !important;
+        color:#0c4a6e !important; background:none !important;
+        border:none !important; order:1 !important;
+      }
 
-      /* ── HERO BUTTONS override ── */
+      /* ── HERO BUTTONS ── */
       .hero-buttons .btn-primary {
         background:#fff !important; color:#0c4a6e !important;
-        border:2px solid #fff !important;
+        border:2px solid #fff !important; box-shadow:0 4px 16px rgba(0,0,0,.15) !important;
       }
       .hero-buttons .btn-primary:hover {
         background:transparent !important; color:#fff !important;
       }
 
-      @media(max-width:992px){
-        #navbar .nav-links { display:none; }
+      @media(max-width:900px){
+        #navbar .nav-links { display:none !important; }
         #navbar .nav-links.open {
-          display:flex; flex-direction:column;
-          position:absolute; top:65px; right:16px; left:16px;
-          background:#fff; border-radius:16px;
-          padding:16px; box-shadow:0 8px 32px rgba(0,0,0,.1);
-          border:1px solid #bae6fd; gap:4px;
+          display:flex !important; flex-direction:column !important;
+          position:absolute !important; top:64px !important;
+          right:16px !important; left:16px !important;
+          background:#fff !important; border-radius:16px !important;
+          padding:12px !important; box-shadow:0 8px 32px rgba(0,0,0,.1) !important;
+          border:1px solid #e0f2fe !important; gap:2px !important; z-index:9999 !important;
         }
-        #navbar .nav-links.open a { color:#0c4a6e; border-color:transparent; }
-        #navbar .mobile-menu-toggle { display:block; }
-        #navbar .nav-cta { display:none; }
+        #navbar .nav-links.open a { color:#0c4a6e !important; }
+        #navbar .mobile-menu-toggle { display:block !important; }
+        #navbar .nav-cta { display:none !important; }
       }
     </style>
 </head>
